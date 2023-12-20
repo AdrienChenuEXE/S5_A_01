@@ -73,7 +73,7 @@ fun SimpleDropdownMenu() {
 
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopCenter
     ) {
         ExposedDropdownMenuBox(
             expanded = isExpended,
