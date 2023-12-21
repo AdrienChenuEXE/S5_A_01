@@ -52,9 +52,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //Greeting(name = "Axel")
                     //BarChart()
-                    SimpleDropdownMenu()
+                    //DropdownMenu()
+                    HomeScreen()
                 }
             }
         }
@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun SimpleDropdownMenu() {
+fun DropdownMenu() {
     var isExpended by remember {
         mutableStateOf(false)
     }
@@ -115,22 +115,6 @@ fun SimpleDropdownMenu() {
                 )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Application_S5_A_01Theme {
-        Greeting("Android")
     }
 }
 
