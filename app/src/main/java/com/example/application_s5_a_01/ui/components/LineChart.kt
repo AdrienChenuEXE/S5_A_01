@@ -1,7 +1,8 @@
-package com.example.application_s5_a_01.ui.screens
+package com.example.application_s5_a_01.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,18 +21,20 @@ import co.yml.charts.ui.linechart.model.SelectionHighlightPopUp
 import co.yml.charts.ui.linechart.model.ShadowUnderLine
 
 @Composable
-fun BarChart() {
-    val pointsData: List<Point> =
-        listOf(Point(0f, 40f), Point(1f, 90f), Point(2f, 0f), Point(3f, 60f), Point(4f, 10f))
+fun MeasureLineChart(
+    pointsData: List<Point>,
+    stepsize: Int,
+                     ) {
     val xAxisData = AxisData.Builder()
-        .axisStepSize(100.dp)
-        .backgroundColor(Color.Blue)
-        .steps(pointsData.size - 1)
-        .labelData { i -> i.toString() }
+        .axisStepSize(stepsize.dp)
+        .backgroundColor(Color.White)
+        .steps(24)
+        .labelData { i -> "${i.toString()}h" }
         .labelAndAxisLinePadding(15.dp)
+        .axisOffset(50.dp)
         .build()
 
-    val steps: Int = 5 // Replace 5 with your desired number of steps
+    val steps: Int = 8
     val yAxisData = AxisData.Builder()
         .steps(steps)
         .backgroundColor(Color.Red)
@@ -59,7 +62,6 @@ fun BarChart() {
 
     LineChart(
         modifier = Modifier
-            .fillMaxWidth()
             .height(300.dp),
         lineChartData = lineChartData
     )

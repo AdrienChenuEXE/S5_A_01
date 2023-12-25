@@ -14,29 +14,45 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+val classRoomList = listOf<String>("d251", "d351", "d360")
+
 @Composable
-fun ClassRoomScreen(
-    navController: NavController,
-    classRoomId: String
-){
+fun ClassRoomListScreen(navController: NavController){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.Blue)
+            .background(Color.White)
     ) {
         Text(
-            text = "Classroom $classRoomId",
-            color = Color.White,
+            text = "Class rooms",
+            color = Color.Black,
             fontWeight = FontWeight.Bold,
             fontSize = 40.sp
         )
+        ClassRoomButtonList(navController)
         Button(onClick = {
             navController.navigate("home")
         }
         ) {
             Text(text = "Go back to home")
         }
+    }
+}
+
+@Composable
+fun ClassRoomButtonList(navController: NavController){
+    for (classRoom in classRoomList) {
+        ClassRoomButton(classRoom, navController)
+    }
+}
+
+@Composable
+fun ClassRoomButton(classRoomName: String, navController: NavController){
+    Button(onClick = {
+        navController.navigate("classRoom/$classRoomName")
+    }) {
+        Text(text = classRoomName)
     }
 }
