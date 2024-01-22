@@ -1,8 +1,6 @@
-package com.example.application_s5_a_01.ui.components
+package com.example.application_s5_a_01.ui.composables
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color

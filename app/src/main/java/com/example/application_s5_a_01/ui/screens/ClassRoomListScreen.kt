@@ -12,12 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-
-val classRoomList = listOf<String>("d251", "d351", "d360")
+import com.example.application_s5_a_01.model.ClassRoom
+import com.example.application_s5_a_01.model.ClassRooms
 
 @Composable
-fun ClassRoomListScreen(navController: NavController){
+fun ClassRoomListScreen(
+    onClassRoomClicked: (classRoom: ClassRooms) -> Unit,
+    onBackButtonClicked: () -> Unit
+){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -31,9 +33,9 @@ fun ClassRoomListScreen(navController: NavController){
             fontWeight = FontWeight.Bold,
             fontSize = 40.sp
         )
-        ClassRoomButtonList(navController)
+        ClassRoomButtonList(onClassRoomClicked)
         Button(onClick = {
-            navController.navigate("home")
+            onBackButtonClicked()
         }
         ) {
             Text(text = "Go back to home")
@@ -42,17 +44,14 @@ fun ClassRoomListScreen(navController: NavController){
 }
 
 @Composable
-fun ClassRoomButtonList(navController: NavController){
-    for (classRoom in classRoomList) {
-        ClassRoomButton(classRoom, navController)
-    }
-}
-
-@Composable
-fun ClassRoomButton(classRoomName: String, navController: NavController){
-    Button(onClick = {
-        navController.navigate("classRoom/$classRoomName")
-    }) {
-        Text(text = classRoomName)
+fun ClassRoomButtonList(
+    onClassRoomClicked: (classRoom: ClassRooms) -> Unit,
+){
+    for (classRoom in ClassRoom.getClassRooms()) {
+        Button(onClick = {
+            onClassRoomClicked(classRoom)
+        }) {
+            Text(text = classRoom.name)
+        }
     }
 }

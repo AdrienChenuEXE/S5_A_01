@@ -9,5 +9,5 @@ fun getAllPoints(measureList: List<Measure>): List<Point> {
         mockList.add(Point(i.toFloat(), (Math.random()*30+30).toFloat()))
     }
     val moqpointsData = listOf(Point(0f, 40f), Point(1f, 90f), Point(2f, 0f), Point(3f, 60f), Point(4f, 10f))
-    return mockList
+    return moqpointsData
 }
