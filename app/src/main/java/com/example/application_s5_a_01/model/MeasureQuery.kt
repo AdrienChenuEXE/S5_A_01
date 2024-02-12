@@ -4,7 +4,5 @@ data class MeasureQuery (
     val startTimeStamp:Int,
     val endTimeStamp: Int,
     val interval: String,
-    val measureList: List<String>,
-    val discomfortList: List<String>,
     val salle: String
 )

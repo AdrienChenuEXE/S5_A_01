@@ -24,6 +24,17 @@ class ClassRoomViewModel(private val measureRepository: MeasureRepository) : Vie
     var measureUiView: MeasureUiState by mutableStateOf(MeasureUiState.Loading)
         private set
 
+    init {
+        getMeasures(
+            MeasureQuery(
+                startTimeStamp = 1705933378,
+                endTimeStamp = 1705925135,
+                salle = "d251",
+                interval = "2h"
+        )
+        )
+    }
+
     fun getMeasures(
         measureQuery: MeasureQuery
     ) {

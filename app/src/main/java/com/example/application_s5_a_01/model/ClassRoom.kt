@@ -7,12 +7,10 @@ enum class ClassRooms(name: String, val description: String?, val image: Int?) {
     D251("d251", "Description for D251", R.drawable.classroom1),
     D351("d351", "Description for D351", R.drawable.classroom1),
     D360("d360", "Description for D360", R.drawable.classroom1),
-    default("default", null, null)
 }
 
 class ClassRoom {
     companion object {
-
         fun getClassRooms(): EnumEntries<ClassRooms> {
             return ClassRooms.entries
         }

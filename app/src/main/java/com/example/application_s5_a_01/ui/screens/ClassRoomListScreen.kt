@@ -33,8 +33,8 @@ fun ClassRoomListScreen(
     onClassRoomClicked: (classRoom: ClassRooms) -> Unit,
     onBackButtonClicked: () -> Unit
 ) {
-    var searchText = remember { mutableStateOf(TextFieldValue("")) }
-    var classRooms = ClassRoom.getClassRooms()
+    val searchText = remember { mutableStateOf(TextFieldValue("")) }
+    val classRooms = ClassRoom.getClassRooms()
 
     Scaffold(
         topBar = {
