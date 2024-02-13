@@ -22,20 +22,19 @@ import co.yml.charts.ui.linechart.model.ShadowUnderLine
 fun MeasureLineChart(
     pointsData: List<Point>,
     stepsize: Int,
-                     ) {
+    ) {
     val xAxisData = AxisData.Builder()
         .axisStepSize(stepsize.dp)
         .backgroundColor(Color.White)
-        .steps(24)
+        .steps(pointsData.count()-1)
         .labelData { i -> "${i.toString()}h" }
         .labelAndAxisLinePadding(15.dp)
         .axisOffset(50.dp)
         .build()
 
-    val steps: Int = 8
+    val steps: Int = 0
     val yAxisData = AxisData.Builder()
         .steps(steps)
-        .backgroundColor(Color.Red)
         .labelAndAxisLinePadding(20.dp)
         .build()
 

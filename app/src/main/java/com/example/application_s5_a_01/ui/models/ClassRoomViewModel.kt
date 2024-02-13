@@ -27,11 +27,9 @@ class ClassRoomViewModel(private val measureRepository: MeasureRepository) : Vie
     init {
         getMeasures(
             MeasureQuery(
-                startTimeStamp = 1705933378,
-                endTimeStamp = 1705925135,
-                salle = "d251",
-                interval = "2h"
-        )
+                start = 1705933378,
+                end = 1705925135
+            )
         )
     }
 

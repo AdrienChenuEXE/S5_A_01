@@ -1,6 +1,5 @@
 package com.example.application_s5_a_01.ui.screens
 
-import MeasureUiState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,17 +24,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.application_s5_a_01.R
 import com.example.application_s5_a_01.model.ClassRooms
-import com.example.application_s5_a_01.model.Measure
+import com.example.application_s5_a_01.model.SallesList
 import com.example.application_s5_a_01.ui.composables.MeasureLineChart
+import com.example.application_s5_a_01.ui.composables.SAEDropDown
 import com.example.application_s5_a_01.ui.domain.getAllPoints
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
+enum class Interval (val text: String) {
+    day(text = "Dernier jour"), // 24h
+    halfday(text = "Dernières 12h"), // 12h
+    hour(text = "Dernière heure"), // 1h
+}
+
+enum class Measure (val text: String) {
+    co2(text = "CO2"),
+    humidity(text = "Humidité"),
+    uv(text = "UV"),
+    db(text = "dB"),
+    temperature(text = "Temperature")
+}
 
 @Composable
 fun ClassRoomDetailsScreen(
     classRoom: ClassRooms,
-    measureUiState: MeasureUiState,
+    measureUiState: SallesList,
     retryAction: () -> Unit,
     reload: () -> Unit
     ){
@@ -48,7 +62,8 @@ fun ClassRoomDetailsScreen(
         },
         state = swipeRefreshState,
     ) {
-        when (measureUiState) {
+        ClassRoomDetails()
+        /*when (measureUiState) {
             is MeasureUiState.Loading -> LoadingScreen()
             is MeasureUiState.Success -> ClassRoomDetails(
                 classRoom,
@@ -56,15 +71,19 @@ fun ClassRoomDetailsScreen(
             )
             is MeasureUiState.Error -> ErrorScreen(retryAction = retryAction)
             else -> {}
-        }
+        }*/
     }
 }
 
 @Composable
 fun ClassRoomDetails(
-    classRoom: ClassRooms,
-    measures: List<Measure>
     ) {
+    var interval by remember {
+        mutableStateOf(Interval.day)
+    }
+    var measure by remember {
+        mutableStateOf(Measure.temperature)
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -72,7 +91,7 @@ fun ClassRoomDetails(
             .fillMaxSize()
     ) {
         Text(
-            text = "Classroom ${classRoom.name}",
+            text = "Classroom",
             color = Color.Black,
             fontWeight = FontWeight.Bold,
             fontSize = 40.sp
@@ -82,10 +101,17 @@ fun ClassRoomDetails(
             getAllPoints(emptyList()),
             40
         )
-        Button(onClick = {
-        }
+        SAEDropDown(
+            selected = interval.text,
+            entries = Interval.entries.map { it.text }
         ) {
-            Text(text = "Go back to home")
+            interval = Interval.entries.find { e -> e.text == it }!!
+        }
+        SAEDropDown(
+            selected = measure.text,
+            entries = Measure.entries.map { it.text }
+        ) {
+            measure = Measure.entries.find { e -> e.text == it }!!
         }
     }
 }
@@ -136,4 +162,6 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
         contentDescription = stringResource(R.string.loading)
     )
 }
+
+
 

@@ -31,7 +31,6 @@ import com.example.application_s5_a_01.model.ClassRooms
 @Composable
 fun ClassRoomListScreen(
     onClassRoomClicked: (classRoom: ClassRooms) -> Unit,
-    onBackButtonClicked: () -> Unit
 ) {
     val searchText = remember { mutableStateOf(TextFieldValue("")) }
     val classRooms = ClassRoom.getClassRooms()
@@ -63,14 +62,6 @@ fun ClassRoomListScreen(
                 }) { classRoom ->
                     ClassRoomCard(classRoom, onClassRoomClicked)
                 }
-            }
-        },
-        bottomBar = {
-            Button(onClick = {
-                onBackButtonClicked()
-            }
-            ) {
-                Text(text = "Go back to home")
             }
         }
     )

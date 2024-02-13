@@ -1,16 +1,11 @@
 package com.example.application_s5_a_01.ui
 
-import ClassRoomViewModel
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -24,19 +19,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.application_s5_a_01.model.ClassRooms
+import com.example.application_s5_a_01.model.Measure
+import com.example.application_s5_a_01.model.MeasuresList
+import com.example.application_s5_a_01.model.Salle
+import com.example.application_s5_a_01.model.SallesList
 import com.example.application_s5_a_01.ui.screens.ClassRoomDetailsScreen
 import com.example.application_s5_a_01.ui.screens.ClassRoomListScreen
-import com.example.application_s5_a_01.ui.screens.HomeScreen
 
 enum class Routes(val routeName: String) {
-    Home(routeName = "home"),
     CLassRoomList(routeName = "list"),
     ClassRoomDetails(routeName = "single"),
 }
@@ -50,46 +45,65 @@ fun SAEApp(
     ){
 
     var currentClassRoom: ClassRooms by remember { mutableStateOf(ClassRooms.D251) }
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     Scaffold(
         topBar = {
             SAEAppBar(
-                navController = navController,
                 isDarkMode = isDarkMode,
                 switchDarkMode = switchDarkMode,
-                showButton = navBackStackEntry?.destination?.route != Routes.Home.routeName
             )
         }
     ) {
-        NavHost(navController = navController, startDestination = "home" ){
-            composable(Routes.Home.routeName){
-                HomeScreen(
-                    onClassRoomListButtonClick = {
-                        navController.navigate(Routes.CLassRoomList.routeName)
-                    }
-                )
-            }
+        NavHost(navController = navController, startDestination = Routes.CLassRoomList.routeName ){
             composable(Routes.CLassRoomList.routeName){
                 ClassRoomListScreen(
                     onClassRoomClicked = {
                         currentClassRoom = it;
                         navController.navigate(Routes.ClassRoomDetails.routeName)
-                    },
-                    onBackButtonClicked = {
-                        navController.navigate(Routes.Home.routeName)
                     }
                 )
             }
             composable(Routes.ClassRoomDetails.routeName) { backStackEntry ->
-                val classRoomViewModel: ClassRoomViewModel =
-                    viewModel(factory = ClassRoomViewModel.Factory)
+                /*val classRoomViewModel: ClassRoomViewModel =
+                    viewModel(factory = ClassRoomViewModel.Factory)*/
                 ClassRoomDetailsScreen(
                     currentClassRoom,
-                    measureUiState = classRoomViewModel.measureUiView,
-                    retryAction = {},
-                    reload = {}
-                )
+                    measureUiState = SallesList(
+                        salles = arrayListOf(
+                            Salle(
+                                id = "d251",
+                                timestamps = arrayListOf(
+                                    MeasuresList(
+                                        timestamp = 12566789,
+                                        measure = arrayListOf(
+                                            Measure(
+                                                discomfortList = arrayListOf(),
+                                                value = 29.72,
+                                            ),
+                                            Measure(
+                                                discomfortList = arrayListOf(),
+                                                value = 34.52,
+                                            ),
+                                            Measure(
+                                                discomfortList = arrayListOf(),
+                                                value = 31.96,
+                                            ),
+                                            Measure(
+                                                discomfortList = arrayListOf(),
+                                                value = 33.99,
+                                            ),
+                                            Measure(
+                                                discomfortList = arrayListOf(),
+                                                value = 61.22,
+                                            ),
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    retryAction = {}
+                ) {}
             }
         }
     }
@@ -99,8 +113,6 @@ fun SAEApp(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SAEAppBar(
-    navController: NavHostController,
-    showButton: Boolean,
     isDarkMode: Boolean,
     switchDarkMode: () -> Unit
 ) {
@@ -121,17 +133,7 @@ fun SAEAppBar(
                     modifier = Modifier.padding(end = 20.dp)
                 )
             }
-        },
-        navigationIcon = {
-                if (showButton) {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                }
-            }
-        },
+        }
     )
 }
 
