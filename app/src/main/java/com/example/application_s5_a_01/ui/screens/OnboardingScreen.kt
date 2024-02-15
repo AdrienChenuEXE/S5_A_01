@@ -19,7 +19,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +40,7 @@ data class OnboardPage(
 val onboardPagesList = listOf(
     OnboardPage(
         imageRes = R.drawable.thermometer,
-        title = "Bienvenue dans <nom>",
+        title = "Bienvenue dans CrackBoules",
         description = "Nous utilisons les différents capteurs placés dans les salles de l'IUT :" +
                 "température, concentration de CO2, intensité sonore...",
         color = Color(0xFF3498db)
@@ -53,7 +53,7 @@ val onboardPagesList = listOf(
     ), OnboardPage(
         imageRes = R.drawable.thumb_up,
         title = "Démarrez dès maintenant",
-        description = "Cliquez sur démarrer et choississez une salle de classe pour démarrer!" +
+        description = "Cliquez sur commencer et choississez une salle de classe pour démarrer!" +
                 "Si vous souhaitez revoir ce menu à chaque lancement de l'application, allez dans" +
                 " les paramètres",
         color = Color(0xFFf1c40f)
@@ -150,8 +150,7 @@ fun OnboardScreen(
 ) {
 
     val onboardPages = onboardPagesList
-
-    val currentPage = remember { mutableStateOf(0) }
+    val currentPage = remember { mutableIntStateOf(0) }
 
     Column(
         modifier = Modifier.fillMaxHeight()
@@ -163,26 +162,26 @@ fun OnboardScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
-                imageRes = onboardPages[currentPage.value].imageRes,
-                color = onboardPages[currentPage.value].color
+                imageRes = onboardPages[currentPage.intValue].imageRes,
+                color = onboardPages[currentPage.intValue].color
             )
 
             OnBoardDetails(
                 modifier = Modifier
                     .weight(1f)
                     .padding(16.dp),
-                currentPage = onboardPages[currentPage.value]
+                currentPage = onboardPages[currentPage.intValue]
             )
 
             OnBoardNavButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 16.dp),
-                currentPage = currentPage.value,
+                currentPage = currentPage.intValue,
                 noOfPages = onboardPages.size,
                 onNextClicked = {
-                    if (currentPage.value < onboardPages.size-1 ) {
-                        currentPage.value++
+                    if (currentPage.intValue < onboardPages.size-1 ) {
+                        currentPage.intValue++
                     } else {
                         doneOnboarding()
                     }
@@ -190,9 +189,9 @@ fun OnboardScreen(
         }
         TabSelector(
             onboardPages = onboardPages,
-            currentPage = currentPage.value
+            currentPage = currentPage.intValue
         ) { index ->
-            currentPage.value = index
+            currentPage.intValue = index
         }
     }
 }

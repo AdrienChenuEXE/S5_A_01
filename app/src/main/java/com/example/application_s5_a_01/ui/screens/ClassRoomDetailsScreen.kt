@@ -1,21 +1,24 @@
 package com.example.application_s5_a_01.ui.screens
 
+import MeasureUiState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,32 +26,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.application_s5_a_01.R
-import com.example.application_s5_a_01.model.ClassRooms
-import com.example.application_s5_a_01.model.SallesList
+import com.example.application_s5_a_01.model.Interval
+import com.example.application_s5_a_01.model.MeasureSettings
+import com.example.application_s5_a_01.model.Measures
 import com.example.application_s5_a_01.ui.composables.MeasureLineChart
 import com.example.application_s5_a_01.ui.composables.SAEDropDown
 import com.example.application_s5_a_01.ui.domain.getAllPoints
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
-enum class Interval (val text: String) {
-    day(text = "Dernier jour"), // 24h
-    halfday(text = "Dernières 12h"), // 12h
-    hour(text = "Dernière heure"), // 1h
-}
-
-enum class Measure (val text: String) {
-    co2(text = "CO2"),
-    humidity(text = "Humidité"),
-    uv(text = "UV"),
-    db(text = "dB"),
-    temperature(text = "Temperature")
-}
 
 @Composable
 fun ClassRoomDetailsScreen(
-    classRoom: ClassRooms,
-    measureUiState: SallesList,
+    settings: MeasureSettings,
+    measureUiState: MeasureUiState,
     retryAction: () -> Unit,
     reload: () -> Unit
     ){
@@ -62,28 +53,21 @@ fun ClassRoomDetailsScreen(
         },
         state = swipeRefreshState,
     ) {
-        ClassRoomDetails()
-        /*when (measureUiState) {
+        when (measureUiState) {
             is MeasureUiState.Loading -> LoadingScreen()
             is MeasureUiState.Success -> ClassRoomDetails(
-                classRoom,
-                listOf()
+                settings
             )
             is MeasureUiState.Error -> ErrorScreen(retryAction = retryAction)
             else -> {}
-        }*/
+        }
     }
 }
 
 @Composable
 fun ClassRoomDetails(
+    settings: MeasureSettings
     ) {
-    var interval by remember {
-        mutableStateOf(Interval.day)
-    }
-    var measure by remember {
-        mutableStateOf(Measure.temperature)
-    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -92,7 +76,6 @@ fun ClassRoomDetails(
     ) {
         Text(
             text = "Classroom",
-            color = Color.Black,
             fontWeight = FontWeight.Bold,
             fontSize = 40.sp
         )
@@ -102,16 +85,16 @@ fun ClassRoomDetails(
             40
         )
         SAEDropDown(
-            selected = interval.text,
+            selected = settings.interval.text,
             entries = Interval.entries.map { it.text }
         ) {
-            interval = Interval.entries.find { e -> e.text == it }!!
+            settings.interval = Interval.entries.find { e -> e.text == it }!!
         }
         SAEDropDown(
-            selected = measure.text,
-            entries = Measure.entries.map { it.text }
+            selected = settings.measure.text,
+            entries = Measures.entries.map { it.text }
         ) {
-            measure = Measure.entries.find { e -> e.text == it }!!
+            settings.measure = Measures.entries.find { e -> e.text == it }!!
         }
     }
 }
@@ -131,7 +114,10 @@ fun MeasureView(
     value: String
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color.Red)
     ) {
         Text(label)
         Text(value, fontSize = 30.sp)
@@ -146,7 +132,8 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_connection_error), contentDescription = ""
+            painter = painterResource(id = R.drawable.ic_connection_error),
+            contentDescription = ""
         )
         Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
         Button(onClick = retryAction) {

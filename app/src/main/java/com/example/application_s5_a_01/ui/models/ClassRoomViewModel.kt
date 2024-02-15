@@ -1,3 +1,4 @@
+
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,14 +9,14 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.application_s5_a_01.SAEApplication
 import com.example.application_s5_a_01.data.MeasureRepository
-import com.example.application_s5_a_01.model.Measure
 import com.example.application_s5_a_01.model.MeasureQuery
+import com.example.application_s5_a_01.model.Salle
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
 sealed interface MeasureUiState {
-    data class Success(val measures: List<Measure>) : MeasureUiState
+    data class Success(val measures: List<Salle>) : MeasureUiState
     object Error : MeasureUiState
     object Loading : MeasureUiState
 }
@@ -23,15 +24,6 @@ sealed interface MeasureUiState {
 class ClassRoomViewModel(private val measureRepository: MeasureRepository) : ViewModel() {
     var measureUiView: MeasureUiState by mutableStateOf(MeasureUiState.Loading)
         private set
-
-    init {
-        getMeasures(
-            MeasureQuery(
-                start = 1705933378,
-                end = 1705925135
-            )
-        )
-    }
 
     fun getMeasures(
         measureQuery: MeasureQuery

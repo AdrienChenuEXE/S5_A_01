@@ -25,15 +25,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.application_s5_a_01.model.ClassRoom
-import com.example.application_s5_a_01.model.ClassRooms
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClassRoomListScreen(
-    onClassRoomClicked: (classRoom: ClassRooms) -> Unit,
+    onClassRoomClicked: (classRoom: ClassRoom) -> Unit,
 ) {
     val searchText = remember { mutableStateOf(TextFieldValue("")) }
-    val classRooms = ClassRoom.getClassRooms()
+    val classRooms = ClassRoom.entries
 
     Scaffold(
         topBar = {
@@ -69,8 +68,8 @@ fun ClassRoomListScreen(
 
 @Composable
 fun ClassRoomCard(
-    classRoom: ClassRooms,
-    onClassRoomClicked: (classRoom: ClassRooms) -> Unit
+    classRoom: ClassRoom,
+    onClassRoomClicked: (classRoom: ClassRoom) -> Unit
 ) {
     Card(
         modifier = Modifier
