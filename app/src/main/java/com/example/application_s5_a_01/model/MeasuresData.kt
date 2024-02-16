@@ -35,21 +35,22 @@ data class MeasureSettings (
     var interval: Interval = Interval.day
 ) {
     fun toMeasureQuery():MeasureQuery {
-        var start = System.currentTimeMillis() - 3600 * 1000
+        val currentTime = System.currentTimeMillis()/1000
+        var start = currentTime - 3600
         var intervalQ = "2h"
         val salle = classRoom?.text ?: ""
 
         if (interval == Interval.halfday) {
-            start = System.currentTimeMillis() - 3600 * 1000 * 12
+            start = currentTime - 3600 * 12
             intervalQ = "1h"
         } else if (interval == Interval.hour) {
-            start = System.currentTimeMillis() - 3600 * 1000 * 24
+            start = currentTime - 3600  * 24
             intervalQ = "5m"
         }
 
         return MeasureQuery(
             start = start,
-            end = System.currentTimeMillis(),
+            end = currentTime,
             salle = salle,
             interval = intervalQ,
             measure = measure.text

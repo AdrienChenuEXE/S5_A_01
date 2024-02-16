@@ -10,13 +10,13 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.application_s5_a_01.SAEApplication
 import com.example.application_s5_a_01.data.MeasureRepository
 import com.example.application_s5_a_01.model.MeasureSettings
-import com.example.application_s5_a_01.model.Salle
+import com.example.application_s5_a_01.model.MeasuresData
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
 
 sealed interface MeasureUiState {
-    data class Success(val measures: List<Salle>) : MeasureUiState
+    data class Success(val measures: MeasuresData) : MeasureUiState
     object Error : MeasureUiState
     object Loading : MeasureUiState
 }
