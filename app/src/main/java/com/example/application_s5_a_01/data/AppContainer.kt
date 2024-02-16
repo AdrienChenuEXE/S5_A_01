@@ -9,7 +9,7 @@ interface AppContainer {
 }
 
 class DefaultAppContainer : AppContainer {
-    private val baseUrl = "http://localhost:5000/"
+    private val baseUrl = "http://10.0.2.2:5000/"
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(baseUrl)

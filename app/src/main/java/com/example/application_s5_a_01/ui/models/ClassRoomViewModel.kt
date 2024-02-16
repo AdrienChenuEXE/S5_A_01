@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.application_s5_a_01.SAEApplication
 import com.example.application_s5_a_01.data.MeasureRepository
-import com.example.application_s5_a_01.model.MeasureQuery
+import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.model.Salle
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -25,16 +25,27 @@ class ClassRoomViewModel(private val measureRepository: MeasureRepository) : Vie
     var measureUiView: MeasureUiState by mutableStateOf(MeasureUiState.Loading)
         private set
 
+    var measureSettingsUiView: MeasureSettings by mutableStateOf(
+        MeasureSettings()
+    )
+        private set
+
+    init {
+        getMeasures()
+    }
     fun getMeasures(
-        measureQuery: MeasureQuery
     ) {
         viewModelScope.launch {
             measureUiView = MeasureUiState.Loading
             measureUiView = try {
-                MeasureUiState.Success(measureRepository.getMeasures(measureQuery))
+                val measureQuery = measureSettingsUiView.toMeasureQuery()
+                val measures = measureRepository.getMeasures(measureQuery)
+                MeasureUiState.Success(measures)
             } catch (e: IOException) {
+                println(e.message)
                 MeasureUiState.Error
             } catch (e: HttpException) {
+                println(e.message())
                 MeasureUiState.Error
             }
         }

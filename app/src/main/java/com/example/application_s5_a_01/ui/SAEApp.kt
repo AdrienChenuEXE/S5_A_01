@@ -13,10 +13,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,7 +21,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.ui.screens.ClassRoomDetailsScreen
 import com.example.application_s5_a_01.ui.screens.ClassRoomListScreen
 
@@ -41,8 +36,6 @@ fun SAEApp(
     isDarkMode: Boolean,
     switchDarkMode: () -> Unit
     ){
-
-    var settings: MeasureSettings by remember { mutableStateOf(MeasureSettings()) }
 
     Scaffold(
         topBar = {
@@ -63,13 +56,12 @@ fun SAEApp(
             composable(Routes.ClassRoomDetails.routeName) {
                 val classRoomViewModel: ClassRoomViewModel =
                     viewModel(factory = ClassRoomViewModel.Factory)
-                classRoomViewModel.getMeasures(
-                        settings.toMeasureQuery()
-                )
                 ClassRoomDetailsScreen(
-                    settings = settings,
+                    settings = classRoomViewModel.measureSettingsUiView,
                     measureUiState = classRoomViewModel.measureUiView,
-                    retryAction = {}
+                    retryAction = {
+                        classRoomViewModel.getMeasures()
+                    }
                 ) {}
             }
         }

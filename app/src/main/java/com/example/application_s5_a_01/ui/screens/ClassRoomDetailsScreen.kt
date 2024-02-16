@@ -1,16 +1,17 @@
 package com.example.application_s5_a_01.ui.screens
 
 import MeasureUiState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,15 +21,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.application_s5_a_01.R
 import com.example.application_s5_a_01.model.Interval
 import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.model.Measures
+import com.example.application_s5_a_01.ui.composables.ErrorScreen
 import com.example.application_s5_a_01.ui.composables.MeasureLineChart
 import com.example.application_s5_a_01.ui.composables.SAEDropDown
 import com.example.application_s5_a_01.ui.domain.getAllPoints
@@ -54,7 +53,9 @@ fun ClassRoomDetailsScreen(
         state = swipeRefreshState,
     ) {
         when (measureUiState) {
-            is MeasureUiState.Loading -> LoadingScreen()
+            is MeasureUiState.Loading -> ClassRoomDetails(
+                null
+            )
             is MeasureUiState.Success -> ClassRoomDetails(
                 settings
             )
@@ -66,7 +67,7 @@ fun ClassRoomDetailsScreen(
 
 @Composable
 fun ClassRoomDetails(
-    settings: MeasureSettings
+    settings: MeasureSettings?
     ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,27 +85,40 @@ fun ClassRoomDetails(
             getAllPoints(emptyList()),
             40
         )
-        SAEDropDown(
-            selected = settings.interval.text,
-            entries = Interval.entries.map { it.text }
-        ) {
-            settings.interval = Interval.entries.find { e -> e.text == it }!!
-        }
-        SAEDropDown(
-            selected = settings.measure.text,
-            entries = Measures.entries.map { it.text }
-        ) {
-            settings.measure = Measures.entries.find { e -> e.text == it }!!
+        if (settings != null) {
+            SAEDropDown(
+                selected = settings.interval.text ,
+                entries = Interval.entries.map { it.text }
+            ) {
+                settings.interval = Interval.entries.find { e -> e.text == it }!!
+            }
+            SAEDropDown(
+                selected = settings.measure.text,
+                entries = Measures.entries.map { it.text }
+            ) {
+                settings.measure = Measures.entries.find { e -> e.text == it }!!
+            }
         }
     }
 }
 
 @Composable
 fun MeasureViewList() {
-    Row {
-        MeasureView("Temperature", "24°C")
-        MeasureView("Humidité", "56%")
-        MeasureView("Taux de CO2", "36ug/m3")
+    LazyRow(
+        modifier = Modifier.height(200.dp)
+    ) {
+        item {
+            MeasureView("Temperature", "24°C")
+        }
+        item {
+            MeasureView("Humidité", "56%")
+        }
+        item {
+            MeasureView("Taux de CO2", "36ug/m3")
+        }
+        item {
+            MeasureView("Bruit", "96dB")
+        }
     }
 }
 
@@ -113,42 +127,21 @@ fun MeasureView(
     label: String,
     value: String
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
+            .padding(8.dp)
+            .width(150.dp)
             .clip(RoundedCornerShape(10.dp))
             .background(Color.Red)
     ) {
-        Text(label)
-        Text(value, fontSize = 30.sp)
-    }
-}
-
-@Composable
-fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_connection_error),
-            contentDescription = ""
-        )
-        Text(text = stringResource(R.string.loading_failed), modifier = Modifier.padding(16.dp))
-        Button(onClick = retryAction) {
-            Text(stringResource(R.string.retry))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(label)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(value, fontSize = 30.sp)
         }
     }
 }
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Image(
-        modifier = modifier.size(200.dp),
-        painter = painterResource(R.drawable.loading_img),
-        contentDescription = stringResource(R.string.loading)
-    )
-}
-
-
 

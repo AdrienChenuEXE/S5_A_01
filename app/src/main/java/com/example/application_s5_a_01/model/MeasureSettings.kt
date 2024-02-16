@@ -1,7 +1,11 @@
 package com.example.application_s5_a_01.model
 
 import com.example.application_s5_a_01.R
-import java.time.Instant
+
+enum class Bucket(val text:String) {
+    IUT("IUT_BUCKET"),
+    TETRAS("POCHATSA_BUCKET")
+}
 
 enum class ClassRoom(val text: String, val description: String?, val image: Int?) {
     D251("d251", "Description for D251", R.drawable.classroom1),
@@ -24,27 +28,28 @@ enum class Measures (val text: String) {
 }
 
 data class MeasureSettings (
+    var bucket: Bucket = Bucket.IUT,
     var classRoom: ClassRoom? = null,
     var discomforts: ArrayList<Measures> = arrayListOf(),
     var measure: Measures = Measures.co2,
     var interval: Interval = Interval.day
 ) {
     fun toMeasureQuery():MeasureQuery {
-        var start = Instant.now().minusSeconds(3600).toEpochMilli()
+        var start = System.currentTimeMillis() - 3600 * 1000
         var intervalQ = "2h"
-        var salle = classRoom?.text ?: ""
+        val salle = classRoom?.text ?: ""
 
         if (interval == Interval.halfday) {
-            start = Instant.now().minusSeconds(12 * 3600).toEpochMilli()
+            start = System.currentTimeMillis() - 3600 * 1000 * 12
             intervalQ = "1h"
         } else if (interval == Interval.hour) {
-            start = Instant.now().minusSeconds(24 * 3600).toEpochMilli()
+            start = System.currentTimeMillis() - 3600 * 1000 * 24
             intervalQ = "5m"
         }
 
         return MeasureQuery(
             start = start,
-            end = Instant.now().toEpochMilli(),
+            end = System.currentTimeMillis(),
             salle = salle,
             interval = intervalQ,
             measure = measure.text

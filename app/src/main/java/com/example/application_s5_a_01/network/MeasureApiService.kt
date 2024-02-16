@@ -1,12 +1,17 @@
 package com.example.application_s5_a_01.network
 
 import com.example.application_s5_a_01.model.Salle
-import okhttp3.RequestBody
-import retrofit2.http.Body
-import retrofit2.http.HTTP
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface MeasureApiService {
-    @HTTP(method = "GET", path ="/data", hasBody = true)
-    suspend fun getData(@Body measureQuery: RequestBody): List<Salle>
+    @GET("/data")
+    suspend fun getData(
+        @Query("bucket") bucket: String,
+        @Query("start") start: Long,
+        @Query("end") end: Long,
+        @Query("interval") interval: String,
+        @Query("discomfort") discomforts: String?,
+    ): List<Salle>
 }
 
