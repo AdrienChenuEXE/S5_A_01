@@ -1,5 +1,6 @@
 package com.example.application_s5_a_01.ui.screens
 
+import BottomNavigationBar
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,11 +25,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.application_s5_a_01.model.ClassRoom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClassRoomListScreen(
+    navController: NavController,
     onClassRoomClicked: (classRoom: ClassRoom) -> Unit,
 ) {
     val searchText = remember { mutableStateOf(TextFieldValue("")) }
@@ -49,18 +52,21 @@ fun ClassRoomListScreen(
             )
         },
         content = { innerPadding ->
-            LazyColumn(
-                modifier = Modifier.padding(innerPadding),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                items(classRooms.filter {
-                    it.name.contains(
-                        searchText.value.text,
-                        true
-                    )
-                }) { classRoom ->
-                    ClassRoomCard(classRoom, onClassRoomClicked)
+            Column {
+                LazyColumn(
+                    modifier = Modifier.padding(innerPadding),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    items(classRooms.filter {
+                        it.name.contains(
+                            searchText.value.text,
+                            true
+                        )
+                    }) { classRoom ->
+                        ClassRoomCard(classRoom, onClassRoomClicked)
+                    }
                 }
+                BottomNavigationBar(navController = navController)
             }
         }
     )
