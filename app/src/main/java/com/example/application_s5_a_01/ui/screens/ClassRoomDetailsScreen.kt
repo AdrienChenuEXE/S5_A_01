@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.application_s5_a_01.data.enums.Interval
 import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.model.MeasuresData
 import com.example.application_s5_a_01.ui.composables.ErrorScreen
@@ -37,7 +38,8 @@ fun ClassRoomDetailsScreen(
     settings: MeasureSettings,
     measureUiState: MeasureUiState,
     retryAction: () -> Unit,
-    reload: () -> Unit
+    reload: () -> Unit,
+    onSettingsChange: (MeasureSettings) -> Unit
 ) {
 
     val isRefreshing by remember { mutableStateOf(false) }
@@ -51,12 +53,15 @@ fun ClassRoomDetailsScreen(
     ) {
         when (measureUiState) {
             is MeasureUiState.Loading -> ClassRoomDetails(
-                null, settings
+                null, settings, onSettingsChange = onSettingsChange
             )
 
             is MeasureUiState.Success -> ClassRoomDetails(
                 measureUiState.measures,
-                settings
+                settings,
+                onSettingsChange = { updatedSettings ->
+                    settings.interval = updatedSettings.interval
+                }
             )
 
             is MeasureUiState.Error -> ErrorScreen(retryAction = retryAction)
@@ -69,6 +74,7 @@ fun ClassRoomDetailsScreen(
 fun ClassRoomDetails(
     data: MeasuresData?,
     settings: MeasureSettings,
+    onSettingsChange: (MeasureSettings) -> Unit
 ) {
     var isControl by remember { mutableIntStateOf(0) }
 
@@ -99,15 +105,37 @@ fun ClassRoomDetails(
                 fontSize = 40.sp
             )
         }
+
         Column {
             TextSwitch(selectedIndex = isControl, items = listOf("Data", "Control"), onSelectionChange = {
                 isControl = it
             })
         }
 
+        IntervalSwitch(
+            currentInterval = settings.interval,
+            onIntervalChange = { newInterval ->
+                val updatedSettings = settings.copy(interval = newInterval)
+                onSettingsChange(updatedSettings)
+            }
+        )
+
         if (isControl == 0) {
             DataScreen(data = data, settings = settings)
         }
 
     }
+}
+
+@Composable
+fun IntervalSwitch(
+    currentInterval: Interval,
+    onIntervalChange: (Interval) -> Unit
+) {
+    TextSwitch(
+        selectedIndex = Interval.entries.indexOf(currentInterval),
+        items = Interval.entries.map { it.text }.reversed(),
+        onSelectionChange = {
+            onIntervalChange(Interval.entries[it])
+    })
 }

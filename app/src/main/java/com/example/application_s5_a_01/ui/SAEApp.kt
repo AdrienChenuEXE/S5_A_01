@@ -49,8 +49,12 @@ fun SAEApp(
                     measureUiState = classRoomViewModel.measureUiView,
                     retryAction = {
                         classRoomViewModel.getMeasures()
+                    },
+                    reload = {},
+                    onSettingsChange = {
+                        classRoomViewModel.setSettingsInterval(it.interval)
                     }
-                ) {}
+                )
             }
         }
     }

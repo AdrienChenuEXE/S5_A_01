@@ -77,7 +77,7 @@ public fun TextSwitch(
                     val padding = 8.dp.toPx()
                     drawRoundRect(
                         topLeft = Offset(x = indicatorOffset.toPx() + padding, padding),
-                        size = Size(size.width / 2 - padding * 2, size.height - padding * 2),
+                        size = Size(size.width / items.size - padding * 2, size.height - padding * 2),
                         color = Color.Black,
                         cornerRadius = CornerRadius(x = 8.dp.toPx(), y = 8.dp.toPx()),
                     )
@@ -86,7 +86,7 @@ public fun TextSwitch(
                         drawContent()
                         drawRoundRect(
                             topLeft = Offset(x = indicatorOffset.toPx(), 0f),
-                            size = Size(size.width / 2, size.height),
+                            size = Size(size.width / items.size, size.height),
                             color = Color.White,
                             cornerRadius = CornerRadius(x = 8.dp.toPx(), y = 8.dp.toPx()),
                             blendMode = BlendMode.SrcOut

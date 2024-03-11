@@ -5,9 +5,9 @@ enum class Interval (
     val interval: String,
     val secondsToRemove: Int,
 ) {
-    week(text = "Dernière semaine", interval = "1d", secondsToRemove = 3600*24*7), // 7 days
-    day(text = "Dernier jour", interval = "2h", secondsToRemove = 3600*24), // 24h
-    halfday(text = "Dernières 12h", interval = "1h", secondsToRemove = 3600 * 12), // 12h
-    hour(text = "Dernière heure", interval = "5m", secondsToRemove = 3600), // 1h
+    week(text = "7d", interval = "1d", secondsToRemove = 3600*24*7), // 7 days
+    day(text = "24h", interval = "2h", secondsToRemove = 3600*24), // 24h
+    halfday(text = "12h", interval = "1h", secondsToRemove = 3600 * 12), // 12h
+    hour(text = "1h", interval = "5m", secondsToRemove = 3600), // 1h
 }
 

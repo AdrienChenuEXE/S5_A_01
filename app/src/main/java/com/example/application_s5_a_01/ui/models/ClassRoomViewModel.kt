@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.application_s5_a_01.SAEApplication
 import com.example.application_s5_a_01.data.MeasureRepository
+import com.example.application_s5_a_01.data.enums.Interval
 import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.model.MeasuresData
 import kotlinx.coroutines.launch
@@ -29,6 +30,10 @@ class ClassRoomViewModel(private val measureRepository: MeasureRepository) : Vie
         MeasureSettings()
     )
         private set
+
+    fun setSettingsInterval(interval: Interval) {
+        this.measureSettingsUiView.interval = interval
+    }
 
     init {
         getMeasures()
