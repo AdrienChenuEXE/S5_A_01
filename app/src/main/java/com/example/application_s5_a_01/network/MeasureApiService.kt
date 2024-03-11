@@ -12,6 +12,7 @@ interface MeasureApiService {
         @Query("end") end: Long,
         @Query("interval") interval: String,
         @Query("discomfort") discomforts: String?,
+        @Query("measure") measures: String?
     ): MeasuresData
 }
 

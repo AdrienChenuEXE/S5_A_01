@@ -82,4 +82,14 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling")
 
+    // Vico
+    implementation("com.patrykandpatrick.vico:compose:1.13.1")
+    implementation("com.patrykandpatrick.vico:compose-m2:1.13.1")
+    implementation("com.patrykandpatrick.vico:compose-m3:1.13.1")
+    implementation("com.patrykandpatrick.vico:core:1.13.1")
+    implementation("com.patrykandpatrick.vico:views:1.13.1")
+
+    // Schimmer
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
+
 }

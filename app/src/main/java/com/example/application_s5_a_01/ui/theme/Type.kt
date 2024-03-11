@@ -8,15 +8,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.application_s5_a_01.R
 
-val openSans = FontFamily(
-    Font(R.font.open_sans)
+val montserrat = FontFamily(
+    Font(R.font.montserrat)
 )
+
+
 
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = openSans,
-        fontWeight = FontWeight.Normal,
+        fontFamily = montserrat,
+        fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp

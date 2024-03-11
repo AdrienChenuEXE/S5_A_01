@@ -1,6 +1,7 @@
 package com.example.application_s5_a_01.model
 
 import com.example.application_s5_a_01.R
+import com.example.application_s5_a_01.data.enums.Interval
 
 enum class Bucket(val text:String) {
     IUT("IUT_BUCKET"),
@@ -13,11 +14,11 @@ enum class ClassRoom(val text: String, val description: String?, val image: Int?
     D360("d360", "Description for D360", R.drawable.classroom1),
 }
 
-enum class Interval (val text: String) {
-    day(text = "Dernier jour"), // 24h
-    halfday(text = "Dernières 12h"), // 12h
-    hour(text = "Dernière heure"), // 1h
+interface ValueEntry {
+    val label: String
 }
+
+val Days = listOf("Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di")
 
 enum class Measures (val text: String) {
     co2(text = "CO2"),
@@ -32,27 +33,18 @@ data class MeasureSettings (
     var classRoom: ClassRoom? = null,
     var discomforts: ArrayList<Measures> = arrayListOf(),
     var measure: Measures = Measures.co2,
-    var interval: Interval = Interval.day
+    var interval: Interval = Interval.week
 ) {
+
     fun toMeasureQuery():MeasureQuery {
         val currentTime = System.currentTimeMillis()/1000
-        var start = currentTime - 3600
-        var intervalQ = "2h"
         val salle = classRoom?.text ?: ""
 
-        if (interval == Interval.halfday) {
-            start = currentTime - 3600 * 12
-            intervalQ = "1h"
-        } else if (interval == Interval.hour) {
-            start = currentTime - 3600  * 24
-            intervalQ = "5m"
-        }
-
         return MeasureQuery(
-            start = start,
+            start = currentTime - interval.secondsToRemove,
             end = currentTime,
             salle = salle,
-            interval = intervalQ,
+            interval = interval.interval,
             measure = measure.text
         )
     }

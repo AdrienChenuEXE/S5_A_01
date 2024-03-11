@@ -16,6 +16,7 @@ class NetworkMeasureRepository(
         discomforts = null,
         end = measureQuery.end,
         start = measureQuery.start,
-        interval = measureQuery.interval
+        interval = measureQuery.interval,
+        measures = "temperature"
     )
 }
