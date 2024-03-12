@@ -35,6 +35,7 @@ fun SAEApp(
     isDarkMode: Boolean,
     switchDarkMode: () -> Unit
     ){
+    val classRoomViewModel: ClassRoomViewModel = viewModel(factory = ClassRoomViewModel.Factory)
 
     Scaffold(
     ) {
@@ -42,13 +43,12 @@ fun SAEApp(
             composable(Routes.CLassRoomList.routeName){
                 ClassRoomListScreen(
                     onClassRoomClicked = {
+                        classRoomViewModel.setClassroom(it)
                         navController.navigate(Routes.ClassRoomDetails.routeName)
                     }
                 )
             }
             composable(Routes.ClassRoomDetails.routeName) {
-                val classRoomViewModel: ClassRoomViewModel =
-                    viewModel(factory = ClassRoomViewModel.Factory)
                 ClassRoomDetailsScreen(
                     settings = classRoomViewModel.measureSettingsUiView,
                     measureUiState = classRoomViewModel.measureUiView,

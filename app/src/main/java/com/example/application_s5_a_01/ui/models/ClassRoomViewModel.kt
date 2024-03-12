@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.application_s5_a_01.SAEApplication
 import com.example.application_s5_a_01.data.MeasureRepository
+import com.example.application_s5_a_01.data.enums.ClassRoom
 import com.example.application_s5_a_01.data.enums.Interval
 import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.model.MeasuresData
@@ -27,6 +28,10 @@ class ClassRoomViewModel(private val measureRepository: MeasureRepository) : Vie
         private set
 
     var measureSettingsUiView: MeasureSettings by mutableStateOf(MeasureSettings())
+    var humidity: Int? by mutableStateOf(null)
+    var temperature: Int? by mutableStateOf(null)
+    var smoke: Int? by mutableStateOf(null)
+    var co2: Int? by mutableStateOf(null)
 
     init {
         getMeasures()
@@ -36,6 +41,16 @@ class ClassRoomViewModel(private val measureRepository: MeasureRepository) : Vie
         viewModelScope.launch {
             measureSettingsUiView.interval = interval
         }
+    }
+
+    fun setClassroom(classRoom: ClassRoom) {
+        viewModelScope.launch {
+            measureSettingsUiView.classRoom = classRoom
+        }
+    }
+
+    fun setMeasureToShowOnChart() {
+
     }
 
     fun getMeasures(

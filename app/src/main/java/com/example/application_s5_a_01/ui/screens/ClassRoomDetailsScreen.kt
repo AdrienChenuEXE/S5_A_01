@@ -102,7 +102,7 @@ fun ClassRoomDetails(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = ("Classroom " + data?.data?.get(0)?.salle) ?: "",
+                text = ("Classroom " + (settings.classRoom?.text ?: "unknown")),
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.White,
                 fontSize = 40.sp
@@ -113,7 +113,6 @@ fun ClassRoomDetails(
             selectedIndex = Interval.entries.indexOf(settings.interval),
             items = Interval.entries.map { it.text }
         ) {
-            println("test")
             onIntervalChange(Interval.entries[it])
         }
 
@@ -122,14 +121,9 @@ fun ClassRoomDetails(
             modifier = Modifier.height(10.dp)
         )
 
-        // Afficher les DiscomfortCards pour chaque élément de discomfortList
-        data?.data?.get(0)?.values?.forEach { timePoint ->
-            timePoint.values.forEach { measure ->
-                measure.discomfortList.forEach { discomfortCode ->
-                    DiscomfortInfo.getDiscomfortInfo(discomfortCode)?.let { discomfortInfo ->
-                        DiscomfortCard(discomfortInfo = discomfortInfo)
-                    }
-                }
+        data?.getCurrentDiscomforts()?.forEach {discomfort ->
+            DiscomfortInfo.getDiscomfortInfo(discomfort)?.let { discomfortInfo ->
+                DiscomfortCard(discomfortInfo = discomfortInfo)
             }
         }
     }

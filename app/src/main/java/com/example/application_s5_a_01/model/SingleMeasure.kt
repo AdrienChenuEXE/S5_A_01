@@ -12,9 +12,7 @@ enum class MeasureValues(
     smoke("Fumée", "?"),
     sound("Décibels", "dB", R.drawable.sound),
     luminosity("Luminosité", "lux", R.drawable.sun),
-    carbondioxyde("Co2", "μg/m³", R.drawable.co2),
-    /*volatilcarbondioxyde("Co2 Volatile", "ug/m3"),
-    dewcarbondioxyde("co2 Dew", "ug/m3\""),*/
+    carbondioxyde("CO2", "μg/m³", R.drawable.co2),
 }
 
 data class SingleMeasure(

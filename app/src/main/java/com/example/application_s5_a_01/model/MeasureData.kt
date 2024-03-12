@@ -13,6 +13,17 @@ data class MeasuresData(
         return getSalle().getMeasureValuesList(mesure).dropLast(1)
     }
 
+    fun getCurrentDiscomforts(): ArrayList<String> {
+        val values = getSalle().getLastTimePoint().values
+        val discomfortsList = arrayListOf<String>()
+        for (value in values) {
+            for (discomfort in value.discomfortList) {
+                discomfortsList.add(discomfort)
+            }
+        }
+        return discomfortsList
+    }
+
    fun getCurrentValues(): ArrayList<SingleMeasure> {
        val currentValues = getSalle().getLastTimePoint().values
        val currentMeasures = arrayListOf<SingleMeasure>()
