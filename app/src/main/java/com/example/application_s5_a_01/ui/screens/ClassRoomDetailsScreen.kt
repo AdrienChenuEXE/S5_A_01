@@ -102,7 +102,7 @@ fun ClassRoomDetails(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = ("Classroom " + data?.data?.get(0)?.salle) ?: "",
+                text = ("Salle " + data?.data?.get(0)?.salle?.uppercase()) ?: "",
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.White,
                 fontSize = 40.sp

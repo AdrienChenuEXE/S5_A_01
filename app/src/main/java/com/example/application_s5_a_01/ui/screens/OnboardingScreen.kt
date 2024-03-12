@@ -39,24 +39,20 @@ data class OnboardPage(
 
 val onboardPagesList = listOf(
     OnboardPage(
-        imageRes = R.drawable.thermometer,
-        title = "Bienvenue dans CrackBoules",
-        description = "Nous utilisons les différents capteurs placés dans les salles de l'IUT :" +
-                "température, concentration de CO2, intensité sonore...",
-        color = Color(0xFF3498db)
+        imageRes = R.drawable.iut_logo,
+        title = "Bienvenue dans EduSense",
+        description = "Découvrez le futur de l'éducation avec EduSense, une solution innovante utilisant les capteurs intelligents des salles de l'IUT pour surveiller la température, la concentration de CO2, l'intensité sonore et bien plus encore.",
+        color = Color(0xFF1b3592)
     ), OnboardPage(
-        imageRes = R.drawable.brain,
-        title = "Voyagez dans le futur",
-        description = "Nous utilisons l'intelligence artificielle afin de déterminer des " +
-                "prédictions sur les futures valeurs mesurées.",
+        imageRes = R.drawable.intelligence_artificielle,
+        title = "Explorez les possibilités",
+        description = "Plongez dans le futur avec notre intelligence artificielle avancée qui prédit les tendances et les évolutions des valeurs mesurées, ouvrant ainsi de nouvelles perspectives pour l'apprentissage et le confort des étudiants.",
+        color = Color(0xFFb5121b)
+    ), OnboardPage(
+        imageRes = R.drawable.application_mobile,
+        title = "Prêt à commencer",
+        description = "Commencez dès maintenant en sélectionnant une salle de classe et en découvrant les données en temps réel.",
         color = Color(0xFF9b59b6)
-    ), OnboardPage(
-        imageRes = R.drawable.thumb_up,
-        title = "Démarrez dès maintenant",
-        description = "Cliquez sur commencer et choississez une salle de classe pour démarrer!" +
-                "Si vous souhaitez revoir ce menu à chaque lancement de l'application, allez dans" +
-                " les paramètres",
-        color = Color(0xFFf1c40f)
     )
 )
 
