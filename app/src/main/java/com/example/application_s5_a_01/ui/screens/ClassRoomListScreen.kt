@@ -55,9 +55,10 @@ fun ClassRoomListScreen(
     val classRooms = ClassRoom.entries
 
     Scaffold(
+        modifier = Modifier.padding(top = 20.dp),
         topBar = {
             TopAppBar(
-                title = { Text("Bienvenue") }, // Ajout du titre "Bienvenue"
+                title = { Text("Bienvenue") },
                 actions = {
                     Box(
                         modifier = Modifier
@@ -67,7 +68,7 @@ fun ClassRoomListScreen(
                         OutlinedTextField(
                             value = searchText.value,
                             onValueChange = { searchText.value = it },
-                            placeholder = { Text("Search classrooms") },
+                            placeholder = { Text("Rechercher une salle ...") },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
                             leadingIcon = {
@@ -124,7 +125,6 @@ fun ClassRoomListScreen(
                     onHomeClicked = { },
                     onFavoriteClicked = {  },
                     onSettingsClicked = {  }
-
                 )
             }
         }

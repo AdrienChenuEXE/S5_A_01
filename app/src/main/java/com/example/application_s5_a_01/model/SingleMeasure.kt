@@ -5,7 +5,7 @@ import com.example.application_s5_a_01.R
 enum class MeasureValues(
     val value: String,
     val unity: String?,
-    val icon: Int? = R.drawable.weed
+    val icon: Int? = R.drawable.ic_connection_error
     ) {
     humidity("Humidité", "%"),
     temperature("Température", "°C", R.drawable.temperature),
