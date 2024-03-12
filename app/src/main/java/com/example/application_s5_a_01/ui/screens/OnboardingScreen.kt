@@ -52,7 +52,7 @@ val onboardPagesList = listOf(
         imageRes = R.drawable.application_mobile,
         title = "Prêt à commencer",
         description = "Commencez dès maintenant en sélectionnant une salle de classe et en découvrant les données en temps réel.",
-        color = Color(0xFF9b59b6)
+        color = Color(0xFFEE7332)
     )
 )
 
