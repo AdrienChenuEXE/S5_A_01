@@ -26,18 +26,18 @@ class ClassRoomViewModel(private val measureRepository: MeasureRepository) : Vie
     var measureUiView: MeasureUiState by mutableStateOf(MeasureUiState.Loading)
         private set
 
-    var measureSettingsUiView: MeasureSettings by mutableStateOf(
-        MeasureSettings()
-    )
-        private set
-
-    fun setSettingsInterval(interval: Interval) {
-        this.measureSettingsUiView.interval = interval
-    }
+    var measureSettingsUiView: MeasureSettings by mutableStateOf(MeasureSettings())
 
     init {
         getMeasures()
     }
+
+    fun setInterval(interval: Interval) {
+        viewModelScope.launch {
+            measureSettingsUiView.interval = interval
+        }
+    }
+
     fun getMeasures(
     ) {
         viewModelScope.launch {
