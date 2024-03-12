@@ -14,14 +14,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.application_s5_a_01.model.DiscomfortInfo
+import com.example.application_s5_a_01.data.enums.Interval
 import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.model.MeasuresData
 import com.example.application_s5_a_01.ui.composables.ErrorScreen
@@ -44,7 +45,7 @@ fun ClassRoomDetailsScreen(
     settings: MeasureSettings,
     measureUiState: MeasureUiState,
     retryAction: () -> Unit,
-    reload: () -> Unit
+    onIntervalChange: (Interval) -> Unit
 ) {
 
     val isRefreshing by remember { mutableStateOf(false) }
@@ -52,19 +53,21 @@ fun ClassRoomDetailsScreen(
 
     SwipeRefresh(
         onRefresh = {
-            reload()
+            retryAction()
         },
         state = swipeRefreshState,
     ) {
         when (measureUiState) {
             is MeasureUiState.Loading -> ClassRoomDetails(
-                null, settings
+                null, settings, {}
             )
 
             is MeasureUiState.Success -> ClassRoomDetails(
                 measureUiState.measures,
                 settings
-            )
+            ) {
+                onIntervalChange(it)
+            }
 
             is MeasureUiState.Error -> ErrorScreen(retryAction = retryAction)
             else -> {}
@@ -76,13 +79,14 @@ fun ClassRoomDetailsScreen(
 fun ClassRoomDetails(
     data: MeasuresData?,
     settings: MeasureSettings,
+    onIntervalChange: (Interval) -> Unit
 ) {
-    var isControl by remember { mutableIntStateOf(0) }
-
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize()
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
-
         Row(
             modifier = Modifier
                 .height(150.dp)
@@ -108,14 +112,13 @@ fun ClassRoomDetails(
                 fontSize = 40.sp
             )
         }
-        Column {
-            TextSwitch(selectedIndex = isControl, items = listOf("Data", "Control"), onSelectionChange = {
-                isControl = it
-            })
-        }
 
-        if (isControl == 0) {
-            DataScreen(data = data, settings = settings)
+        TextSwitch(
+            selectedIndex = Interval.entries.indexOf(settings.interval),
+            items = Interval.entries.map { it.text }
+        ) {
+            println("test")
+            onIntervalChange(Interval.entries[it])
         }
 
         //Test

@@ -20,7 +20,9 @@ interface ValueEntry {
 
 val Days = listOf("Lu", "Ma", "Me", "Je", "Ve", "Sa", "Di")
 
-enum class Measures (val text: String) {
+enum class Measures (
+    val text: String
+) {
     co2(text = "CO2"),
     humidity(text = "Humidité"),
     uv(text = "UV"),
@@ -32,7 +34,7 @@ data class MeasureSettings (
     var bucket: Bucket = Bucket.IUT,
     var classRoom: ClassRoom? = null,
     var discomforts: ArrayList<Measures> = arrayListOf(),
-    var measure: Measures = Measures.co2,
+    var measure: Measures = Measures.humidity,
     var interval: Interval = Interval.week
 ) {
 

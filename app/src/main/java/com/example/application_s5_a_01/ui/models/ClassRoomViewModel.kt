@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.application_s5_a_01.SAEApplication
 import com.example.application_s5_a_01.data.MeasureRepository
+import com.example.application_s5_a_01.data.enums.Interval
 import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.model.MeasuresData
 import kotlinx.coroutines.launch
@@ -25,14 +26,18 @@ class ClassRoomViewModel(private val measureRepository: MeasureRepository) : Vie
     var measureUiView: MeasureUiState by mutableStateOf(MeasureUiState.Loading)
         private set
 
-    var measureSettingsUiView: MeasureSettings by mutableStateOf(
-        MeasureSettings()
-    )
-        private set
+    var measureSettingsUiView: MeasureSettings by mutableStateOf(MeasureSettings())
 
     init {
         getMeasures()
     }
+
+    fun setInterval(interval: Interval) {
+        viewModelScope.launch {
+            measureSettingsUiView.interval = interval
+        }
+    }
+
     fun getMeasures(
     ) {
         viewModelScope.launch {
