@@ -18,11 +18,3 @@ data class SingleMeasure(
     val measure: Measures,
     val value: Double
 )
-
-fun getYLabels(diff: Float): List<Float> {
-    val labelList = mutableListOf<Float>()
-    for (i in 0..5) {
-        labelList.add((i * diff))
-    }
-    return labelList
-}

@@ -33,16 +33,19 @@ import kotlin.math.roundToInt
 @Composable
 fun MeasureViewList(
     data: MeasuresData?,
-    setCurrentMeasure: (Measures) -> Unit
+    setCurrentMeasure: (Measures) -> Unit,
+    currentMeasure: Measures
 ) {
     LazyRow(
     ) {
         if (data != null) {
             items(data.getCurrentValues()) { measure ->
+                val isMeasure = currentMeasure == measure.measure
                 MeasureView(
                     singleMeasure = measure,
-                    true
-                ) { setCurrentMeasure(it) }
+                    isSelected = isMeasure,
+                    setCurrentMeasure =  { setCurrentMeasure(it) }
+                )
             }
         } else {
             items(5) {
@@ -58,6 +61,10 @@ fun MeasureViewList(
                                 MaterialTheme.colorScheme.tertiary
                             )
                         )
+                        .background(Color(
+                            ColorUtils
+                                .setAlphaComponent(Color.White.toArgb(), 100)
+                        ))
                 )
             }
         }

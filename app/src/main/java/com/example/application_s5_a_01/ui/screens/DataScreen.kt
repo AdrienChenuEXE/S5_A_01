@@ -14,8 +14,10 @@ fun DataScreen(
     setCurrentMeasure: (Measures) -> Unit
 ) {
     MeasureViewList(
-        data = data
-    ) { setCurrentMeasure(it) }
+        data = data,
+        currentMeasure = settings.measure,
+        setCurrentMeasure = {setCurrentMeasure(it)}
+    )
     SAEChart(
         values = data?.getValues(settings.measure.value),
         settings = settings
