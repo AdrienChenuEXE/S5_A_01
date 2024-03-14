@@ -1,6 +1,5 @@
 package com.example.application_s5_a_01.ui
 
-import ClassRoomViewModel
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -20,6 +19,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.application_s5_a_01.ui.models.ClassRoomViewModel
 import com.example.application_s5_a_01.ui.screens.ClassRoomDetailsScreen
 import com.example.application_s5_a_01.ui.screens.ClassRoomListScreen
 
@@ -43,27 +43,30 @@ fun SAEApp(
             composable(Routes.CLassRoomList.routeName){
                 ClassRoomListScreen(
                     onClassRoomClicked = {
-                        classRoomViewModel.setClassroom(it)
+                        classRoomViewModel.settings.classRoom = it
                         navController.navigate(Routes.ClassRoomDetails.routeName)
                     }
                 )
             }
             composable(Routes.ClassRoomDetails.routeName) {
                 ClassRoomDetailsScreen(
-                    settings = classRoomViewModel.measureSettingsUiView,
+                    settings = classRoomViewModel.settings,
                     measureUiState = classRoomViewModel.measureUiView,
                     retryAction = {
                         classRoomViewModel.getMeasures()
                     },
                     onIntervalChange = {
-                        classRoomViewModel.setInterval(it)
+                        classRoomViewModel.settings.interval = it
+                        classRoomViewModel.getMeasures()
+                    },
+                    setCurrentMeasure = {
+                        classRoomViewModel.setMeasure(it)
                         classRoomViewModel.getMeasures()
                     }
                 )
             }
         }
     }
-
 }
 
 @Composable

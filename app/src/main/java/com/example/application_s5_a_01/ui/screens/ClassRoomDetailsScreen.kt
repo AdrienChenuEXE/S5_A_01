@@ -1,11 +1,9 @@
 package com.example.application_s5_a_01.ui.screens
 
-import MeasureUiState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,12 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.application_s5_a_01.data.enums.Interval
+import com.example.application_s5_a_01.data.enums.Measures
 import com.example.application_s5_a_01.model.DiscomfortInfo
 import com.example.application_s5_a_01.model.MeasureSettings
 import com.example.application_s5_a_01.model.MeasuresData
 import com.example.application_s5_a_01.ui.composables.DiscomfortCard
 import com.example.application_s5_a_01.ui.composables.ErrorScreen
 import com.example.application_s5_a_01.ui.composables.TextSwitch
+import com.example.application_s5_a_01.ui.models.MeasureUiState
 import com.example.application_s5_a_01.utils.GraphicUtils
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -41,12 +41,11 @@ fun ClassRoomDetailsScreen(
     settings: MeasureSettings,
     measureUiState: MeasureUiState,
     retryAction: () -> Unit,
-    onIntervalChange: (Interval) -> Unit
+    onIntervalChange: (Interval) -> Unit,
+    setCurrentMeasure: (Measures) -> Unit
 ) {
-
     val isRefreshing by remember { mutableStateOf(false) }
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
-
     SwipeRefresh(
         onRefresh = {
             retryAction()
@@ -55,18 +54,20 @@ fun ClassRoomDetailsScreen(
     ) {
         when (measureUiState) {
             is MeasureUiState.Loading -> ClassRoomDetails(
-                null, settings, {}
+                null, settings, {}, {}
             )
 
             is MeasureUiState.Success -> ClassRoomDetails(
                 measureUiState.measures,
-                settings
-            ) {
-                onIntervalChange(it)
-            }
+                settings,
+                {
+                    onIntervalChange(it)
+                },
+                {setCurrentMeasure(it)
+                }
+                )
 
             is MeasureUiState.Error -> ErrorScreen(retryAction = retryAction)
-            else -> {}
         }
     }
 }
@@ -75,7 +76,8 @@ fun ClassRoomDetailsScreen(
 fun ClassRoomDetails(
     data: MeasuresData?,
     settings: MeasureSettings,
-    onIntervalChange: (Interval) -> Unit
+    onIntervalChange: (Interval) -> Unit,
+    setCurrentMeasure: (Measures) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -116,10 +118,10 @@ fun ClassRoomDetails(
             onIntervalChange(Interval.entries[it])
         }
 
-        DataScreen(data = data, settings = settings )
-        Spacer(
-            modifier = Modifier.height(10.dp)
-        )
+        DataScreen(data = data, settings = settings, setCurrentMeasure = {
+            setCurrentMeasure(it)
+        })
+
 
         data?.getCurrentDiscomforts()?.forEach {discomfort ->
             DiscomfortInfo.getDiscomfortInfo(discomfort)?.let { discomfortInfo ->

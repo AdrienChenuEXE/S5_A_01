@@ -15,10 +15,10 @@ enum class Interval (
     val secondsToRemove: Int,
     val getLabels: List<String>
 ) {
-    hour(text = "1h", interval = "10m", secondsToRemove = 3600, getHourLabels()), // 1h
+    /*hour(text = "1h", interval = "10m", secondsToRemove = 3600, getHourLabels()), // 1h*/
     halfday(text = "12h", interval = "1h", secondsToRemove = 3600 * 12, getHalfDayLabels()), // 12h
     day(text = "24h", interval = "2h", secondsToRemove = 3600*24, getDayLabels()), // 24h
-    week(text = "7d", interval = "1d", secondsToRemove = 3600*24*7, getWeekLabels()), // 7 days
+    week(text = "7 jours", interval = "1d", secondsToRemove = 3600*24*7, getWeekLabels()), // 7 days
 
 }
 

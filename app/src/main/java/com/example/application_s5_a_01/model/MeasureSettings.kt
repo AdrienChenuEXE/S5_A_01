@@ -14,7 +14,6 @@ data class MeasureSettings (
     var measure: Measures = Measures.humidity,
     var interval: Interval = Interval.week
 ) {
-
     fun toMeasureQuery():MeasureQuery {
         val currentTime = System.currentTimeMillis()/1000
         val salle = classRoom?.text ?: ""

@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             var isDarkMode: Boolean by remember { mutableStateOf(false) }
-            var isOnboardingDone: Boolean by remember { mutableStateOf(false) }
+            var isOnboardingDone: Boolean by remember { mutableStateOf(true) }
 
             SAETheme(isDarkMode) {
                 Surface(

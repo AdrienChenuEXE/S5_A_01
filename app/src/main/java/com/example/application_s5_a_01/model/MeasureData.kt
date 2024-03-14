@@ -1,5 +1,7 @@
 package com.example.application_s5_a_01.model
 
+import com.example.application_s5_a_01.data.enums.Measures
+import com.example.application_s5_a_01.data.enums.SingleMeasure
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -27,12 +29,12 @@ data class MeasuresData(
    fun getCurrentValues(): ArrayList<SingleMeasure> {
        val currentValues = getSalle().getLastTimePoint().values
        val currentMeasures = arrayListOf<SingleMeasure>()
-       MeasureValues.entries.forEach { measure ->
+       Measures.entries.forEach { measure ->
            val value = currentValues.find { it.mesure == measure.value }?.value
            if (value != null) {
                currentMeasures.add(
                     SingleMeasure(
-                        measureValue = measure,
+                        measure = measure,
                         value = value
                     )
                )
